@@ -8,8 +8,8 @@ kakasi.setMode('K','H')
 kakasi.setMode('J','H')
 kakasi.setMode('a','a')
 conv = kakasi.getConverter()
-with open('wfile.txt', 'w') as wf:
-  with codecs.open('rfile.txt','r','utf_8') as rf:
+with open('moto_kana.txt', 'w') as wf:
+  with codecs.open('m_matome.txt','r','utf_8') as rf:
     lines = rf.readlines()
     for line in lines:
       reslut = conv.do(line)
