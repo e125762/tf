@@ -80,6 +80,10 @@ model.add(LSTM(n_hidden, return_sequences=True))
 
 model.add(TimeDistributed(Dense(n_out)))
 model.add(Activation('softmax'))
+
+#学習結果読み込み
+model.load_weights('./weights.hdf5')
+
 model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.001, beta_1=0.9, beta_2=0.999), metrics=['accuracy'])
 
 #モデル保存
