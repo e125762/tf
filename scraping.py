@@ -16,6 +16,7 @@ def parse(url):
 
 count = 0
 category = ['a','i','u','e','o','ka','ki','ku','ke','ko','sa','si','su','se','so','ta','ti','tu','te','to','na','ni','nu','ne','no','ha','hi','hu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa']
+
 with open('four_char.txt','w') as f:
   for mozi in category:
     url = "http://sanabo.com/words/archives/category/{0}".format(mozi)
@@ -29,7 +30,7 @@ with open('four_char.txt','w') as f:
       a_tag = soup.find_all('h3')
 
       for yozi in a_tag:
-        four_char = yozi.a.string[6:]
+        four_char = yozi.a.string.split('】')[1]
         f.write(four_char + '\n')
         count += 1
 
