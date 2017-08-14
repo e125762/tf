@@ -15,7 +15,10 @@ def parse(url):
   return soup
 
 count = 0
+mean_count = 0
 category = ['a','i','u','e','o','ka','ki','ku','ke','ko','sa','si','su','se','so','ta','ti','tu','te','to','na','ni','nu','ne','no','ha','hi','hu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa']
+
+mean_f = open('mean.txt', 'a')
 
 with open('four_char.txt','w') as f:
   for mozi in category:
@@ -30,10 +33,31 @@ with open('four_char.txt','w') as f:
       a_tag = soup.find_all('h3')
 
       for yozi in a_tag:
+        #意味取得部分
+        time.sleep(2)
+        link = yozi.a['href']
+        mean_page = parse(link)
+        if mean_page.find('strong') is None:
+          continue
+
+        if mean_page.find('strong').string == '意 味：':
+          mean_page.find('strong').extract()
+          meaning_tag = mean_page.find('li', {'type': 'square'})
+          for li_tag in meaning_tag:
+            mean_f.write(li_tag.string + '\n')
+        else:
+          mean_page.span.b.extract()
+          meaning_tag = mean_page.find('span', {'class': 's1'})
+          for li_tag in meaning_tag:
+            mean_f.write(li_tag.string + '\n')
+        mean_count += 1
+
+        #四字熟語取得部分
         four_char = yozi.a.string.split('】')[1]
         f.write(four_char + '\n')
         count += 1
 
 print('四字熟語数：',count)
-
+print('四字熟語意味数：',mean_count)
+mean_f.close()
 
