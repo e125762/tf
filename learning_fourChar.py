@@ -97,12 +97,12 @@ with open('model.json', 'w') as m:
 
 #モデル学習
 
-epochs = 1
-batch_size = 10
+epochs = 100
+batch_size = 20
 
 '''
 #学習率の可視化
-hist = model.fit(X_train, Y_train, batch_size=batch_size, epochs=1, \
+hist = model.fit(X_train, Y_train, batch_size=batch_size, epochs=epochs, verbose=2, \
        validation_data=(X_validation, Y_validation),callbacks=[early_stopping])
 
 loss = hist.history['loss']
