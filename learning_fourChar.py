@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from keras.layers.core import Dropout
+from keras.callbacks import EarlyStopping
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation, RepeatVector
 from keras.layers import LSTM
@@ -66,6 +69,8 @@ n_in = len(chars)
 n_hidden = 128
 n_out = len(chars)
 
+early_stopping = EarlyStopping(monitor='val_loss', patience=5, verbose=0)
+
 model = Sequential()
 #Encoder
 #maxlen = 入力データの個数, n_in = データの次元数
@@ -74,6 +79,7 @@ model.add(LSTM(n_hidden, input_shape=(maxlen_mean, n_in)))
 #Decoder
 model.add(RepeatVector(maxlen_four))
 model.add(LSTM(n_hidden, return_sequences=True))
+model.add(Dropout(0.5))
 
 model.add(TimeDistributed(Dense(n_out)))
 model.add(Activation('softmax'))
@@ -81,7 +87,8 @@ model.add(Activation('softmax'))
 #学習結果読み込み
 #model.load_weights('./weights.hdf5')
 
-model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.001, beta_1=0.9, beta_2=0.999), metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.001, beta_1=0.9, beta_2=0.999), \
+  metrics=['accuracy'])
 
 #モデル保存
 json_string = model.to_json()
@@ -90,11 +97,26 @@ with open('model.json', 'w') as m:
 
 #モデル学習
 
-epochs = 3000
-batch_size = 20
+epochs = 1
+batch_size = 10
 
+'''
+#学習率の可視化
+hist = model.fit(X_train, Y_train, batch_size=batch_size, epochs=1, \
+       validation_data=(X_validation, Y_validation),callbacks=[early_stopping])
+
+loss = hist.history['loss']
+plt.rc('font',family='serif')
+fig = plt.figure()
+plt.plot(range(len(loss)),loss, label='loss',color='black')
+plt.xlabel('epochs')
+plt.show()
+plt.savefig(__file__ + '.eps')
+
+'''
 for epoch in range(epochs):
-  model.fit(X_train, Y_train, batch_size=batch_size, epochs=1, validation_data=(X_validation, Y_validation))
+  model.fit(X_train, Y_train, batch_size=batch_size, epochs=1, \
+  validation_data=(X_validation, Y_validation),callbacks=[early_stopping])
 
   index = np.random.randint(0, N_validation)
   question = X_validation[np.array([index])]
