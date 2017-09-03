@@ -91,7 +91,7 @@ epochs = 2
 batch_size = 20
 
 for epoch in range(epochs):
-  model.fit(X_train, Y_train, batch_size=batch_size, epochs=1, \
+  model.fit(X_train, Y_train, batch_size=batch_size, epochs=1, verbose=2,\
   validation_data=(X_validation, Y_validation))#, callbacks=[early_stopping])
 
   index = np.random.randint(0, N_validation)
