@@ -6,14 +6,14 @@ n_mean = []
 count = 1
 c = 1
 box = []
-with open('yozi_wakati.txt') as f:
+with open('./fourChar_data/yozi_wakati_s.txt') as f:
   lines = f.readlines()
   for line in lines:
     if flag:
       n_four.append(line.count(' '))
     else:
       n_mean.append(line.count(' '))
-      if line.count(' ') > 60:
+      if line.count(' ') > 58:
         box.append(c)
     flag = not(flag)
     c += 1
