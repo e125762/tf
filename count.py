@@ -5,14 +5,14 @@ n_mean = []
 count = 1
 c = 1
 box = []
-with open('four_char_kana.txt') as f:
+with open('yozi_kana.txt') as f:
   lines = f.readlines()
   for line in lines:
     if flag:
       n_four.append(len(line))
     else:
       n_mean.append(len(line))
-      if len(line) > 90:
+      if len(line) > 98:
         box.append(c)
     flag = not(flag)
     c += 1
